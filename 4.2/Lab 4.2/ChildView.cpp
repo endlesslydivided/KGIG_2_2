@@ -32,9 +32,8 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!CWnd::PreCreateWindow(cs))
 		return FALSE;
-
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
+	cs.style &= ~WS_BORDER | WS_OVERLAPPEDWINDOW;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), NULL);
 
@@ -56,14 +55,14 @@ void CChildView::OnPaint()
 
 void CChildView::OnDraw()
 {
-	SolarSystem.setDt(0);//задаем начальное значение скорости вращения
-	SolarSystem.setCoords();//задаем координаты
-	SolarSystem.setDt(0.1); //задаем скорость вращения
-	DtTimer = 10;//время задержки в милисекундах для таймера SetTimer()
-	Start = true;//разрешаем рисование в OnPaint()
+	SolarSystem.setDt(0);						//задаем начальное значение скорости вращения
+	SolarSystem.setCoords();					//задаем координаты
+	SolarSystem.setDt(0.1);						//задаем скорость вращения
+	DtTimer = 15;								//время задержки в милисекундах для таймера SetTimer()
+	Start = true;								//разрешаем рисование в OnPaint()
 	Invalidate();
 }
-
+ 
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	SolarSystem.setCoords();
