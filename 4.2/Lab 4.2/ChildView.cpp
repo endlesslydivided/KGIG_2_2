@@ -7,7 +7,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 // CChildView
 
 CChildView::CChildView()
@@ -33,33 +32,34 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	if (!CWnd::PreCreateWindow(cs))
 		return FALSE;
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER | WS_OVERLAPPEDWINDOW;
+	cs.style &= ~WS_BORDER ;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), NULL);
 
 	return TRUE;
 }
 
+
 void CChildView::OnPaint()
 {
 	CPaintDC dc(this);
 	if (Start)
 	{
-		SolarSystem.getRectWorld(RectWorld);				//получение мировых координат окна
-		RectWindow = SolarSystem.getRectWindow();			//получение оконных координат окна
-		setMode(dc, RectWindow, RectWorld);					//установка режим отображения MM_ANISOTROPIC
-		SolarSystem.draw(dc);								//рисование солнечной системы
-		dc.SetMapMode(MM_TEXT);								//возвращение в режим отображения MM_TEXT
+		SolarSystem.getRectWorld(RectWorld);				
+		RectWindow = SolarSystem.getRectWindow();			
+		setMode(dc, RectWindow, RectWorld);					
+		SolarSystem.draw(dc);								
+		dc.SetMapMode(MM_TEXT);								
 	}
 }
 
 void CChildView::OnDraw()
 {
-	SolarSystem.setDt(0);						//задаем начальное значение скорости вращения
-	SolarSystem.setCoords();					//задаем координаты
-	SolarSystem.setDt(0.1);						//задаем скорость вращения
-	DtTimer = 15;								//время задержки в милисекундах для таймера SetTimer()
-	Start = true;								//разрешаем рисование в OnPaint()
+	SolarSystem.setDt(0);						
+	SolarSystem.setCoords();					
+	SolarSystem.setDt(0.1);						
+	DtTimer = 15;								
+	Start = true;								
 	Invalidate();
 }
  

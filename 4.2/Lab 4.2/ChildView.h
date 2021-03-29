@@ -26,6 +26,8 @@ public:
 protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
+	void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+
 	// Реализация
 public:
 	virtual ~CChildView();

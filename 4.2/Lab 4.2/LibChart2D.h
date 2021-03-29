@@ -67,12 +67,12 @@ private:
 	CRect _rectWindow;
 	CRectD _rectWorld;
 
-	double _earthAngularVelocity;	// Угловая скорость Земли относительно Солнца, град./сек.
-	double _moonAngularVelocity;	// Угловая скорость Луны относительно Солнца, град./сек.
+	double _earthAngularVelocity;	
+	double _moonAngularVelocity;	
 	double _marsAngularVelocity;
 
-	double _earthAngularPosition;	// Угловое положение Земли в системе кординат Солнца, град
-	double _moonAngularPosition;	// Угловое положение Луны в системе кординат Земли, град
+	double _earthAngularPosition;	
+	double _moonAngularPosition;	
 	double _marsAngularPosition;
 
 	double _dt;	// Интервал дискретизации, сек.( Интервал между сигналами)

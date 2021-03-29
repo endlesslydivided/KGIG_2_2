@@ -2,21 +2,21 @@
 #include "CMATRIX.H"
 #include "LibChart2D.h"
 
-void setMode(CDC& dc, CRect& rectWindow, CRectD& rectWorld)//параметры+функция
+void setMode(CDC& dc, CRect& rectWindow, CRectD& rectWorld)
 {
-	//прямоугольник в мировых коордщинатах
+
 	double dsx = rectWorld._right - rectWorld._left;
 	double dsy = rectWorld._top - rectWorld._bottom;
 	double xsL = rectWorld._left;
 	double ysL = rectWorld._bottom;
 
-	//прямоугольник оконных координат
+	
 	int dwx = rectWindow.right - rectWindow.left;
 	int dwy = rectWindow.bottom - rectWindow.top;
 	int xwL = rectWindow.left;
 	int ywH = rectWindow.bottom;
 
-	//вписывает в окно
+	
 	dc.SetMapMode(MM_ANISOTROPIC);
 	dc.SetWindowExt((int)dsx, (int)dsy);
 	dc.SetViewportExt(dwx, -dwy);
@@ -53,10 +53,10 @@ CMatrix getTranslation(double xDistance, double yDistance)
 
 CMatrix getRotation(double angle)
 {//поворот
-	double fg = fmod(angle, 360.0);//вычисляет остаток от деления возвращая значение с плавающей точкой для определения на сколько повернулась планета
-	double ff = (fg / 180.0) * PI;//переводим из градусов, в радианы
-	CMatrix rotator(3, 3);//создаем матрицу вычисления угла наклона
-	rotator(0, 0) = cos(ff);//заполняем матрицу (формула в маткаде)
+	double fg = fmod(angle, 360.0);//на сколько повернулась планета
+	double ff = (fg / 180.0) * PI;
+	CMatrix rotator(3, 3);
+	rotator(0, 0) = cos(ff);
 	rotator(0, 1) = -sin(ff);
 	rotator(1, 0) = sin(ff);
 	rotator(1, 1) = cos(ff);
@@ -66,40 +66,31 @@ CMatrix getRotation(double angle)
 
 CSolarSystem::CSolarSystem()
 {
-	double rS = 100,//радиус солнца
-		rE = 70,//радиус земли
-		rM = 30,//радиус луны
-		rMars = 50;//радиус марса
-	double RoE = 10 * rS//радиус от солнца до земли
-		, RoM = 5 * rE,//радиус от земли до луны
-		RoMars = 5 * rS,//радиус от солнца до марса
-		RoV = 10 * rS;
-	double d = RoE + RoM + rM + RoV;//общий радиус всей системы
+	double rS = 100,	rE = 90,	rM = 60,	rMars = 80;
+	double RoE = 10 * rS, RoM = 5 * rE,	RoMars = 5 * rS,	RoV = 10 * rS;
+	double d = RoE + RoM + rM + RoV;
 
-	_rectWorld.setRectD(-d, d, d, -d);//мировые координаты
-	_rectWindow.SetRect(100, -100, 900, 700);//оконные
-	_sun.SetRect(-rS, rS, rS, -rS); //координаты тел
+	_rectWorld.setRectD(-d, d, d, -d);
+	_rectWindow.SetRect(100, -100, 900, 700);
+	_sun.SetRect(-rS, rS, rS, -rS);
 	_earth.SetRect(-rE, rE, rE, -rE);
 	_moon.SetRect(-rM, rM, rM, -rM);
 	_mars.SetRect(-rMars, rMars, rMars, -rMars);
 
-	//положения и размеры орбиты
+
 	_earthOrbit.SetRect(-RoE, RoE, RoE, -RoE);
 	_moonOrbit.SetRect(-RoM, RoM, RoM, -RoM);
 	_marsOrbit.SetRect(-RoMars, RoMars, RoMars, -RoMars);
 
-	//позиции начальные(Угловые позиции)
 	_earthAngularPosition = 0;
 	_moonAngularPosition = 0;
 	_marsAngularPosition = 0;
 
-
-	//скорость вращения
-	_earthAngularVelocity = 5;
+	_earthAngularVelocity = -15;
 	_moonAngularVelocity = 10;
 	_marsAngularVelocity = -30;
 
-	//создаем матрицы заново
+	
 	_earthCoords.RedimMatrix(3);
 	_moonCoords.RedimMatrix(3);
 	_marsCoords.RedimMatrix(3);
@@ -112,8 +103,8 @@ CSolarSystem::CSolarSystem()
 
 void CSolarSystem::setCoords()
 {
-	double RoM = (_moonOrbit.right - _moonOrbit.left) / 2;//радиус орбиты луны
-	double ff = (_moonAngularPosition / 180.0) * PI; //длина окружности орбиты луны
+	double RoM = (_moonOrbit.right - _moonOrbit.left) / 2;
+	double ff = (_moonAngularPosition / 180.0) * PI; 
 	double x = RoM * cos(ff);
 	double y = RoM * sin(ff);
 	_moonCoords(0) = x;
@@ -153,18 +144,15 @@ void CSolarSystem::draw(CDC& dc)
 	CBrush SBrush, EBrush, MBrush, MarsBrush, *pOldBrush;
 	CRect R;
 
-	//цвета планет
 	SBrush.CreateSolidBrush(RGB(255, 0, 0));
 	EBrush.CreateSolidBrush(RGB(0, 0, 255));
 	MBrush.CreateSolidBrush(RGB(0, 255, 0));
 	MarsBrush.CreateSolidBrush(RGB(122, 0, 122));
 
-	//задание орбит
-	dc.SelectStockObject(NULL_BRUSH);			//кись по-умолчанию
-	dc.Ellipse(_earthOrbit);					//траектория Земли
-	dc.Ellipse(_marsOrbit);						//траектория Марса
+	dc.SelectStockObject(NULL_BRUSH);			
+	dc.Ellipse(_earthOrbit);				
+	dc.Ellipse(_marsOrbit);					
 
-	//задание правых координат
 	int d = _moonOrbit.right;
 	R.SetRect(_earthCoords(0) - d, _earthCoords(1) + d, _earthCoords(0) + d, _earthCoords(1) - d);
 	dc.Ellipse(R);
