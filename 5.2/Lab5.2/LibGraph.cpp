@@ -66,8 +66,8 @@ CMatrix getConverterWorldToWindow(CRectD& rectWorld, CRect& rectWindow)
 //Перевод из мировых в видовые
 CMatrix getConverterWorldToView(double r, double phi, double theta)
 {
-	phi = (fmod(phi, 360.0) / 180.0) * PI;// угл до линии обзора камеры по Х в радианах
-	theta = (fmod(theta, 360.0) / 180.0) * PI;// угл до линии обзора камеры по У в радианах
+	phi = (fmod(phi, 360.0) / 180.0) * PI;// угол до линии обзора камеры по Х в радианах
+	theta = (fmod(theta, 360.0) / 180.0) * PI;// угол до линии обзора камеры по У в радианах
 
 	CMatrix result(4, 4);//матрица пересчета из мировой системы координат в видовую
 

@@ -22,12 +22,12 @@ CPyramid::CPyramid()//Пирамида по умолчанию
 
 void CPyramid::draw(CDC& dc, CMatrix& viewport, CRect& rectWindow)//нарисовать пирамиду без невидимых граней
 {
-	CMatrix viewportCoords = sphericalToCartesian(viewport);//переводим из сферической в декартову
-	CMatrix converterWorldToView = getConverterWorldToView(viewport(0), viewport(1), viewport(2));//конвертация мировых в видовые
+	CMatrix viewportCoords = sphericalToCartesian(viewport);
+	CMatrix converterWorldToView = getConverterWorldToView(viewport(0), viewport(1), viewport(2));
 	CMatrix verticesView = converterWorldToView * _vertices;
 	CRectD rectView;
-	getRect(verticesView, rectView);//задаёт прямоугольник для рисования (область для рисования)
-	CMatrix converterWorldToWindow = getConverterWorldToWindow(rectView, rectWindow);//конвертация мировых координат в оконные
+	getRect(verticesView, rectView);
+	CMatrix converterWorldToWindow = getConverterWorldToWindow(rectView, rectWindow);
 
 	CPoint vertices[6];
 	CMatrix verticesCoords(3);
@@ -43,24 +43,23 @@ void CPyramid::draw(CDC& dc, CMatrix& viewport, CRect& rectWindow)//нарисовать п
 		vertices[i].y = (int)verticesCoords(1);
 	}
 
-	CPen brushEdge(PS_SOLID, 2, RGB(0, 0, 255)); //задаем в перо синего цвета для краев(линий)
-	CPen* pOldPen = dc.SelectObject(&brushEdge);//передаем в контекст рисования
-	CBrush brushBottom(RGB(255, 0, 0));//задаем в перо синего цвета для основания
-	CBrush* pOldBrush = dc.SelectObject(&brushBottom); //передаем в контекст рисования
+	CPen brushEdge(PS_SOLID, 2, RGB(0, 0, 255)); 
+	CPen* pOldPen = dc.SelectObject(&brushEdge);
+	CBrush brushBottom(RGB(255, 0, 0));
+	CBrush* pOldBrush = dc.SelectObject(&brushBottom); 
 	CMatrix R1(3), R2(3), normalOuter(3);
 	double sm;
 	for (int i = 0; i < 3; i++) // закрашивание граней
 	{
-		CMatrix VE = _vertices.getCol(i + 3, 0, 2);//Получение подстроки по номеру и диапазону
+		CMatrix VE = _vertices.getCol(i + 3, 0, 2);
 		int k = i == 2 ? 0 : i + 1;
 		R1 = _vertices.getCol(i, 0, 2);
 		R2 = _vertices.getCol(k, 0, 2);
 		CMatrix edgeBase = R2 - R1;
 		CMatrix edgeVertex = VE - R1;
 		normalOuter = vectorProduct(edgeVertex, edgeBase);
-		sm = scalarProduct(normalOuter, viewportCoords);// скалярное произведение видовых и граневых координат
-														//то есть, если произведение = или более 0, то есть площадь и можно рисовать грани
-
+		sm = scalarProduct(normalOuter, viewportCoords);
+														
 		if (sm >= 0)
 		{
 			dc.MoveTo(vertices[i]);
@@ -70,31 +69,27 @@ void CPyramid::draw(CDC& dc, CMatrix& viewport, CRect& rectWindow)//нарисовать п
 			dc.LineTo(vertices[i]);
 		}
 	}
-
-	normalOuter = vectorProduct(R1, R2);
-	sm = scalarProduct(normalOuter, viewportCoords);// скалярное произведение видовых и граневых координат
-	if (viewportCoords(2) < 0) //если меньше, то это основание
+	if (viewportCoords(2) < 0) 
 	{
 		dc.Polygon(vertices, 3);
 	}
-	else//иначе, верхнее основание усеченной пирамиды
+	else
 	{
 		CBrush brushTop(RGB(0, 255, 0));//задаем в перо зеленого цвета для основания
-		dc.SelectObject(brushTop);//передаем перо в контекс рисования
+		dc.SelectObject(brushTop);
 		dc.Polygon(vertices + 3, 3);
 	}
-
 	dc.SelectObject(pOldPen);
 	dc.SelectObject(pOldBrush);
 }
 
 void CPyramid::drawXray(CDC& dc, CMatrix& viewport, CRect& rectWindow)
 {
-	CMatrix converterWorldToView = getConverterWorldToView(viewport(0), viewport(1), viewport(2));//конвертация мировых в видовые
+	CMatrix converterWorldToView = getConverterWorldToView(viewport(0), viewport(1), viewport(2));
 	CMatrix verticesView = converterWorldToView * _vertices;
 	CRectD rectView;
-	getRect(verticesView, rectView);//задаёт прямоугольник для рисования (область для рисования)
-	CMatrix converterWorldToWindow = getConverterWorldToWindow(rectView, rectWindow);//конвертация мировых координат в оконные
+	getRect(verticesView, rectView);
+	CMatrix converterWorldToWindow = getConverterWorldToWindow(rectView, rectWindow);
 
 	CPoint vertices[6];
 	CMatrix verticesCoords(3);
@@ -110,7 +105,7 @@ void CPyramid::drawXray(CDC& dc, CMatrix& viewport, CRect& rectWindow)
 	}
 
 	CPen brushEdge(PS_SOLID, 2, RGB(0, 0, 255)); //задаем в перо синего цвета для краев(линий)
-	CPen* pOldPen = dc.SelectObject(&brushEdge);//передаем в контекст рисования
+	CPen* pOldPen = dc.SelectObject(&brushEdge);
 
 	dc.MoveTo(vertices[2]); //рисуем грани
 	for (int i = 0; i < 3; i++)

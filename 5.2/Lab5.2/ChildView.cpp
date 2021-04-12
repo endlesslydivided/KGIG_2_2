@@ -64,7 +64,7 @@ void CChildView::OnPyramidDraw()
 	Viewport(1) = 315;// угол до линии обзора камеры по Х
 	Viewport(2) = 45;// угол до линии обзора до камеры по У
 
-	Mode = 1;//режим рисунка
+	Mode = 1;
 	Invalidate();
 }
 
@@ -74,11 +74,11 @@ void CChildView::OnPyramidDrawxray()
 	Viewport(1) = 315;// угол до линии обзора камеры по Х
 	Viewport(2) = 45;// угол до линии обзора до камеры по У
 
-	Mode = 2;//режим рисунка
+	Mode = 2;
 	Invalidate();
 }
 
-void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)//Движение фигуры в пространстве через стрелочки
+void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if ((Mode == 1) || (Mode == 2))
 	{
@@ -88,9 +88,13 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)//Движение фигу
 
 		case VK_UP://стрелка вверх
 			d = Viewport(2) - 5;
-			if (d >= 0)
+			if (d >= -180)
 			{
 				Viewport(2) = d;
+			}
+			else
+			{
+				Viewport(2) = d + 360;
 			}
 			break;
 
@@ -99,6 +103,10 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)//Движение фигу
 			if (d <= 180)
 			{
 				Viewport(2) = d;
+			}
+			else
+			{
+				Viewport(2) = d - 360;
 			}
 			break;
 
