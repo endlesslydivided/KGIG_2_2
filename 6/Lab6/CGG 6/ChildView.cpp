@@ -137,36 +137,37 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)//вращение фигу
 	}
 
 	R = p(0), Phi = p(1), Q = p(2);
-	double deltaPhi = 5, deltaQ = 5;
+	double deltaPhi = 10, deltaQ = 10;
+
 	switch (nChar)
 	{
 	case VK_UP:
 	{
 		double qx = Q - deltaQ;
-		if (qx >= 0)
+		/*if (qx >= 0)*/
 			Q = qx;
-		break;
+			break;
 	}
 	case VK_DOWN:
 	{
 		double qx = Q + deltaQ;
-		if (qx <= 180)
+		/*if (qx <= 180)*/
 			Q = qx;
-		break;
+			break;
 	}
 	case VK_LEFT:
 	{
 		double fix = Phi - deltaPhi;
-		if (fix >= 0)
+		/*if (fix >= 0)*/
 			Phi = fix;
-		break;
+			break;
 	}
 	case VK_RIGHT:
 	{
 		double fix = Phi + deltaPhi;
-		if (fix <= 360)
+		/*if (fix <= 360)*/
 			Phi = fix;
-		break;
+			break;
 	}
 	}
 

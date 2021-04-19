@@ -11,7 +11,7 @@ double function1(double x, double y)
 
 double function2(double x, double y)
 {
-	return x * x - y * y;
+	return  x * x - y * y;
 }
 
 double function3(double x, double y)
