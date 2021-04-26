@@ -35,6 +35,9 @@ public:
                                         //которые можно сохранить
 	double MaxElement();			  	// Максимальный элемент матрицы
 	double MinElement();				// Минимальный элемент матрицы
+
+	CMatrix SphereToCart(CMatrix& PView)
+
 };
 
 
