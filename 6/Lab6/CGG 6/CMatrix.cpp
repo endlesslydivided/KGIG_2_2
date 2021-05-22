@@ -325,11 +325,3 @@ double CMatrix::MinElement()
 	return min;
 }
 
-CMatrix SphereToCart(CMatrix& PView)
-{
-	CMatrix R(3);
-	R(0) = PView(0) * cos(PView(1)) * sin(PView(2)); //расстояние
-	R(1) = PView(0) * sin(PView(1)) * sin(PView(2)); //азимут
-	R(2) = PView(0) * cos(PView(2)); //угол
-	return R;
-}
